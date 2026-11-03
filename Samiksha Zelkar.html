@@ -1,0 +1,653 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Samiksha Zelkar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a gallery wall. Hero with an "ability card", a wall of five pigment-coloured doors (one per skill),
+   a sticky-counter story timeline, project cards, and a contact sheet. Painter's pigments are the only loud colour. */
+:root {
+  --bg: #15141A;
+  --surface: #1E1D25;
+  --surface2: #282631;
+  --fg: #EDEBF2;
+  --muted: #A29FB2;
+  --line: #36343F;
+  --accent: #5FD1B0;
+  --accent-ink: #0B1F19;
+  --scrim: rgba(8, 7, 12, .72);
+
+  /* pigments (same in both themes, used on self-contained surfaces) */
+  --viridian: #17785F;
+  --ultramarine: #3B4BC0;
+  --madder: #B8384F;
+  --ochre: #D9A441;
+  --umber: #7A4E34;
+
+  --f-display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --t-xs: .75rem;
+  --t-sm: .875rem;
+  --t-md: 1rem;
+  --t-lg: 1.25rem;
+  --t-xl: clamp(1.6rem, 3.4vw, 2.4rem);
+  --t-2xl: clamp(2.1rem, 5.4vw, 3.9rem);
+  --t-hero: clamp(2.5rem, 7vw, 5.6rem);
+
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #EEF0F5;
+    --surface: #FFFFFF;
+    --surface2: #E2E5EE;
+    --fg: #17161C;
+    --muted: #5A5869;
+    --line: #CBCEDA;
+    --accent: #0E7A63;
+    --accent-ink: #FFFFFF;
+    --scrim: rgba(23, 22, 28, .55);
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #EEF0F5;
+  --surface: #FFFFFF;
+  --surface2: #E2E5EE;
+  --fg: #17161C;
+  --muted: #5A5869;
+  --line: #CBCEDA;
+  --accent: #0E7A63;
+  --accent-ink: #FFFFFF;
+  --scrim: rgba(23, 22, 28, .55);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: var(--t-md);
+  line-height: 1.6;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+h1, h2, h3 { font-family: var(--f-display); font-weight: 600; line-height: 1.05; text-wrap: balance; margin: 0; letter-spacing: -.02em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.mono { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wrap { max-width: 1200px; margin-inline: auto; width: 100%; }
+.sec { padding-block: clamp(56px, 9vw, 112px); scroll-margin-top: 72px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px;
+  font: 500 var(--t-md)/1 var(--f-body); text-decoration: none; cursor: pointer;
+  border-radius: 999px; border: 1px solid var(--fg); background: transparent; color: var(--fg);
+  transition: background .2s, color .2s, border-color .2s;
+}
+.btn:hover { background: var(--fg); color: var(--bg); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+
+/* loader (only shown when JS adds .loading) */
+.loader { display: none; position: fixed; inset: 0; z-index: 100; background: var(--bg); place-items: center; transition: opacity .35s; }
+html.loading .loader { display: grid; }
+.loader.out { opacity: 0; pointer-events: none; }
+.loader-in { display: grid; gap: 6px; justify-items: center; }
+.loader-in strong { font-family: var(--f-display); font-size: clamp(3rem, 12vw, 6rem); font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+
+/* header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.top-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; }
+.logo { font-family: var(--f-display); font-weight: 600; font-size: 1.1rem; text-decoration: none; letter-spacing: -.01em; }
+.top-mid { display: none; }
+.top-right { display: flex; align-items: center; gap: 10px; }
+.icon-btn, .menu-btn {
+  min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--fg);
+  font: 500 var(--t-sm)/1 var(--f-body); cursor: pointer; padding: 0 16px;
+}
+.icon-btn { width: 40px; padding: 0; display: grid; place-items: center; }
+.icon-btn:hover, .menu-btn:hover { border-color: var(--fg); }
+@media (min-width: 760px) { .top-mid { display: block; } }
+
+/* hero */
+.hero-grid { display: grid; gap: 48px; align-items: center; grid-template-columns: 1fr; padding-block: clamp(40px, 7vw, 88px); }
+@media (min-width: 900px) { .hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 64px; } }
+.status { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px 6px 12px; margin-bottom: 28px; }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: block; }
+.hero h1 { font-size: var(--t-hero); font-weight: 500; letter-spacing: -.035em; line-height: .98; }
+.hero h1 .typed { color: var(--accent); font-weight: 700; }
+.caret { display: inline-block; width: .06em; height: .85em; background: var(--accent); margin-left: .05em; vertical-align: -.08em; animation: blink 1s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+.hero-sub { max-width: 52ch; margin-top: 28px; font-size: var(--t-lg); color: var(--muted); line-height: 1.5; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.scroll-hint { margin-top: 44px; }
+
+.card-stage { perspective: 900px; display: flex; justify-content: center; }
+.card {
+  width: min(100%, 340px); aspect-ratio: 5 / 7; border-radius: 18px; background: var(--surface);
+  border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .25s ease-out; will-change: transform;
+}
+.card::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(420px circle at var(--gx, 30%) var(--gy, 0%), color-mix(in srgb, var(--fg) 9%, transparent), transparent 60%);
+}
+.card-top { display: flex; justify-content: space-between; gap: 8px; }
+.mono-mark { font-family: var(--f-display); font-size: clamp(5rem, 16vw, 7.5rem); font-weight: 700; letter-spacing: -.06em; line-height: .8; color: var(--fg); }
+.card-name { font-family: var(--f-display); font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; }
+.card-role { color: var(--muted); font-size: var(--t-sm); margin-top: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.chip { font: 500 var(--t-xs)/1 var(--f-mono); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; color: var(--fg); }
+.swatches { display: flex; height: 10px; border-radius: 999px; overflow: hidden; margin-top: 16px; }
+.swatches span { flex: 1; }
+
+/* doors */
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; margin-bottom: 40px; }
+.sec-head h2 { font-size: var(--t-2xl); max-width: 14ch; }
+.wall { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x proximity; padding-block: 12px 28px; margin-inline: -4px; padding-inline: 4px; }
+.door {
+  flex: 0 0 clamp(200px, 22vw, 232px); aspect-ratio: 3 / 5; position: relative; perspective: 1000px; scroll-snap-align: start;
+  background: none; border: 0; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.room {
+  position: absolute; inset: 0; border-radius: 999px 999px 10px 10px; overflow: hidden;
+  background: var(--surface); background: color-mix(in srgb, var(--pig) 20%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--pig) 55%, var(--line));
+  padding: 38% 20px 22px; display: flex; flex-direction: column; justify-content: flex-end; gap: 12px;
+}
+.room ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.room li { font-size: var(--t-sm); line-height: 1.35; padding-left: 14px; position: relative; }
+.room li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 1px; background: var(--fg); }
+.leaf {
+  position: absolute; inset: 0; border-radius: 999px 999px 10px 10px; background: var(--pig); color: var(--pig-ink);
+  transform-origin: left center; transition: transform .75s cubic-bezier(.2, .7, .2, 1); backface-visibility: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 26px 22px;
+}
+.leaf::before {
+  content: ""; position: absolute; inset: 12px; border-radius: 999px 999px 6px 6px;
+  border: 1px solid currentColor; opacity: .35; pointer-events: none;
+}
+.leaf::after {
+  content: ""; position: absolute; right: 22px; top: 56%; width: 12px; height: 12px; border-radius: 50%;
+  background: currentColor; opacity: .85;
+}
+.leaf .pig { font: 500 var(--t-xs)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .8; }
+.leaf h3 { font-size: 1.6rem; font-weight: 600; line-height: 1.05; }
+.door.open .leaf { transform: rotateY(-74deg); }
+@media (hover: hover) { .door:hover .leaf { transform: rotateY(-74deg); } }
+.door:focus-visible .leaf { transform: rotateY(-74deg); }
+.door:focus-visible { outline-offset: 6px; }
+.wall-note { margin-top: 4px; }
+
+/* projects */
+.proj-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); }
+.proj { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 26px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.proj h3 { font-size: 1.5rem; }
+.proj p, .proj li { color: var(--muted); font-size: var(--t-sm); line-height: 1.55; }
+.proj ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
+.tag { font: 400 var(--t-xs)/1 var(--f-mono); border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; color: var(--muted); }
+.proj a.ext { font-size: var(--t-sm); font-weight: 500; color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; align-self: flex-start; }
+
+/* story */
+.story-grid { display: grid; gap: 40px; grid-template-columns: 1fr; }
+@media (min-width: 860px) { .story-grid { grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 72px; } }
+.story-side { display: none; }
+@media (min-width: 860px) {
+  .story-side { display: block; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 104px); align-self: start; }
+}
+.counter { display: flex; align-items: baseline; gap: 10px; font-family: var(--f-display); }
+.digits { height: 1em; overflow: hidden; font-size: clamp(4rem, 9vw, 7rem); line-height: 1; font-weight: 600; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.digits-strip { display: block; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.digits-strip span { display: block; height: 1em; line-height: 1; }
+.counter .of { font: 400 var(--t-lg)/1 var(--f-mono); color: var(--muted); }
+.side-date { margin-top: 14px; font: 500 var(--t-md)/1.3 var(--f-mono); color: var(--accent); }
+.tl { list-style: none; margin: 0; padding: 0; }
+.tl-item { padding: 0 0 48px 28px; border-left: 1px solid var(--line); position: relative; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before { content: ""; position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--line); transition: background .3s; }
+.tl-item.on::before { background: var(--accent); }
+.tl-item h3 { font-size: var(--t-xl); margin-top: 8px; }
+.tl-org { color: var(--muted); margin-top: 6px; }
+.tl-item ul { margin: 16px 0 0; padding-left: 18px; display: grid; gap: 8px; max-width: 58ch; }
+.also { margin-top: 56px; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.also div { border-top: 1px solid var(--line); padding-top: 14px; }
+.also p { margin-top: 8px; }
+
+/* call to action */
+.cta { border-top: 1px solid var(--line); text-align: left; }
+.cta h2 { font-size: var(--t-hero); font-weight: 500; letter-spacing: -.035em; max-width: 13ch; margin-top: 18px; }
+.cta p { color: var(--muted); max-width: 52ch; margin-top: 24px; font-size: var(--t-lg); line-height: 1.5; }
+
+/* footer */
+.foot { border-top: 1px solid var(--line); padding-block: 48px 40px; }
+.foot-grid { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+.foot h4 { margin: 0 0 14px; font: 500 var(--t-xs)/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.foot a { text-decoration: none; }
+.foot a:hover { text-decoration: underline; }
+.foot-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 48px; color: var(--muted); font-size: var(--t-sm); }
+
+/* overlays */
+.overlay { position: fixed; inset: 0; z-index: 50; }
+.menu { background: var(--bg); padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); overflow-y: auto; }
+.menu-top { display: flex; justify-content: space-between; align-items: center; min-height: 48px; }
+.menu nav { display: grid; gap: 4px; margin-top: 48px; }
+.menu nav a, .menu nav button {
+  font: 500 clamp(2.2rem, 8vw, 4rem)/1.15 var(--f-display); letter-spacing: -.03em; text-decoration: none; text-align: left;
+  background: none; border: 0; color: var(--fg); cursor: pointer; padding: 6px 0;
+}
+.menu nav a:hover, .menu nav button:hover { color: var(--accent); }
+.modal { background: var(--scrim); display: grid; place-items: center; padding: 16px; padding-top: calc(env(safe-area-inset-top, 0px) + 16px); padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
+.sheet { width: min(100%, 520px); max-height: 100%; overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.sheet h2 { font-size: var(--t-xl); }
+.sheet .lead { color: var(--muted); margin-top: 10px; font-size: var(--t-sm); }
+.rows { display: grid; gap: 0; margin-top: 24px; }
+.row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+.row .k { grid-column: 1 / -1; }
+.row .v { font-size: var(--t-md); overflow-wrap: anywhere; user-select: all; min-width: 0; }
+.row a.v { text-decoration: none; }
+.copy { min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 500 var(--t-sm)/1 var(--f-body); cursor: pointer; }
+.copy:hover { border-color: var(--fg); }
+.sheet .note { margin-top: 16px; color: var(--muted); font-size: var(--t-sm); min-height: 1.4em; }
+
+@media (max-width: 520px) {
+  .sheet { padding: 22px; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+}
+</style>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader-in"><span class="mono">Loading the card</span><strong id="pct">0%</strong></div>
+</div>
+<script>
+(function () {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var root = document.documentElement, el = document.getElementById('loader'), pct = document.getElementById('pct');
+    root.classList.add('loading');
+    var start = performance.now(), dur = 650;
+    function done() { el.classList.add('out'); setTimeout(function () { root.classList.remove('loading'); }, 380); }
+    function tick(t) {
+      var p = Math.min(1, (t - start) / dur);
+      pct.textContent = Math.round(p * 100) + '%';
+      if (p < 1) requestAnimationFrame(tick); else done();
+    }
+    requestAnimationFrame(tick);
+    setTimeout(function () { root.classList.remove('loading'); }, 2500);
+  } catch (e) { document.documentElement.classList.remove('loading'); }
+})();
+</script>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="logo" href="#top">Samiksha Zelkar</a>
+    <div class="top-mid mono">Local time <span id="clock">Nagpur</span></div>
+    <div class="top-right">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="Switch light or dark theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-haspopup="true" aria-expanded="false">Menu</button>
+    </div>
+  </div>
+</header>
+
+<div class="overlay menu" id="menu" hidden role="dialog" aria-modal="true" aria-label="Site menu">
+  <div class="wrap">
+    <div class="menu-top">
+      <span class="logo">Samiksha Zelkar</span>
+      <button class="menu-btn" id="menuClose" type="button">Close</button>
+    </div>
+    <nav>
+      <a href="#top" data-close>Home</a>
+      <a href="#work" data-close>Skills</a>
+      <a href="#projects" data-close>Projects</a>
+      <a href="#story" data-close>My story</a>
+      <button type="button" data-contact>Contact</button>
+    </nav>
+  </div>
+</div>
+
+<main>
+  <section class="hero wrap" id="top">
+    <div class="hero-grid">
+      <div>
+        <p class="status mono"><i></i> Open to work · Nagpur, India</p>
+        <h1>Hi, I'm Samiksha. I am a <span class="typed" id="typed">backend developer</span><span class="caret" aria-hidden="true"></span></h1>
+        <p class="hero-sub">I build secure REST APIs with ASP.NET Core and PostgreSQL, and I enjoy the data science side too: models, charts and cleaning messy datasets.</p>
+        <div class="hero-actions">
+          <button class="btn primary" type="button" data-contact>Get in touch</button>
+          <a class="btn" href="#work">See my work</a>
+        </div>
+        <p class="scroll-hint mono">Scroll to explore ↓</p>
+      </div>
+      <div class="card-stage">
+        <div class="card" id="card">
+          <div class="card-top"><span class="mono">My ability card</span><span class="mono">Issued 2026</span></div>
+          <div class="mono-mark" aria-hidden="true">SZ</div>
+          <div>
+            <div class="card-name">Samiksha Zelkar</div>
+            <div class="card-role">Software developer · .NET and PostgreSQL</div>
+            <div class="chips"><span class="chip">C#</span><span class="chip">ASP.NET Core</span><span class="chip">PostgreSQL</span><span class="chip">REST</span></div>
+            <div class="swatches" aria-hidden="true">
+              <span style="background:var(--viridian)"></span><span style="background:var(--ultramarine)"></span><span style="background:var(--madder)"></span><span style="background:var(--ochre)"></span><span style="background:var(--umber)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="work">
+    <div class="sec-head">
+      <h2>My work, one door per skill</h2>
+      <div class="mono">Open a door · swipe along the wall</div>
+    </div>
+    <div class="wall" role="list">
+      <button class="door" type="button" role="listitem" aria-expanded="false" style="--pig:var(--viridian);--pig-ink:#FFFFFF">
+        <span class="room"><span class="mono">Inside</span>
+          <ul><li>C# and .NET Core</li><li>.NET Framework</li><li>ASP.NET Core Web API</li><li>Backend architecture</li></ul></span>
+        <span class="leaf"><span class="pig">Viridian</span><h3>Backend developer</h3></span>
+      </button>
+      <button class="door" type="button" role="listitem" aria-expanded="false" style="--pig:var(--ultramarine);--pig-ink:#FFFFFF">
+        <span class="room"><span class="mono">Inside</span>
+          <ul><li>RESTful API design</li><li>Authentication and authorization</li><li>Error handling</li><li>Testing in Postman</li></ul></span>
+        <span class="leaf"><span class="pig">Ultramarine</span><h3>API builder</h3></span>
+      </button>
+      <button class="door" type="button" role="listitem" aria-expanded="false" style="--pig:var(--madder);--pig-ink:#FFFFFF">
+        <span class="room"><span class="mono">Inside</span>
+          <ul><li>PostgreSQL</li><li>SQL</li><li>CRUD operations for data management</li></ul></span>
+        <span class="leaf"><span class="pig">Madder</span><h3>Database work</h3></span>
+      </button>
+      <button class="door" type="button" role="listitem" aria-expanded="false" style="--pig:var(--ochre);--pig-ink:#2A1E05">
+        <span class="room"><span class="mono">Inside</span>
+          <ul><li>Controller, Service, Repository layers</li><li>Debugging</li><li>Performance optimization</li></ul></span>
+        <span class="leaf"><span class="pig">Ochre</span><h3>Clean structure</h3></span>
+      </button>
+      <button class="door" type="button" role="listitem" aria-expanded="false" style="--pig:var(--umber);--pig-ink:#FFFFFF">
+        <span class="room"><span class="mono">Inside</span>
+          <ul><li>Python, Pandas, NumPy</li><li>Scikit-learn models</li><li>Matplotlib and Seaborn</li><li>Exploratory data analysis</li></ul></span>
+        <span class="leaf"><span class="pig">Umber</span><h3>Data science</h3></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="projects">
+    <div class="sec-head">
+      <h2>Things I have built</h2>
+      <div class="mono">Product, backend, machine learning</div>
+    </div>
+    <div class="proj-grid">
+      <article class="proj">
+        <span class="mono">My own product</span>
+        <h3>Novexa</h3>
+        <p>An insurance broker platform that I own and build, covering the product thinking, interface design and front end for the Indian insurtech space.</p>
+        <a class="ext" href="https://novexa.kaitotech.com" target="_blank" rel="noopener">novexa.kaitotech.com ↗</a>
+        <div class="tags"><span class="tag">Insurtech</span><span class="tag">Product</span><span class="tag">UI/UX</span></div>
+      </article>
+      <article class="proj">
+        <span class="mono">Backend</span>
+        <h3>Backend API development</h3>
+        <ul>
+          <li>Secure RESTful APIs with ASP.NET Core Web API and C#.</li>
+          <li>CRUD operations on a PostgreSQL database.</li>
+          <li>Controller, Service and Repository layers for code that scales.</li>
+          <li>Authentication and authorization on every endpoint, tested in Postman.</li>
+        </ul>
+        <div class="tags"><span class="tag">C#</span><span class="tag">ASP.NET Core</span><span class="tag">PostgreSQL</span><span class="tag">Postman</span></div>
+      </article>
+      <article class="proj">
+        <span class="mono">Machine learning</span>
+        <h3>Heart disease analysis</h3>
+        <p>A classification model that detects heart disease. I preprocessed the dataset, then used histograms, box plots and correlation matrices to find trends and outliers before building the model.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Scikit-learn</span><span class="tag">Seaborn</span></div>
+      </article>
+      <article class="proj">
+        <span class="mono">Machine learning</span>
+        <h3>Diabetes prediction</h3>
+        <p>A prediction model on the Pima Indians Diabetes dataset. I handled missing values, prepared the features, and studied distributions, outliers and correlations to see which features matter.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">NumPy</span><span class="tag">Pandas</span><span class="tag">Matplotlib</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="story">
+    <div class="sec-head">
+      <h2>Let's go back in time.</h2>
+      <div class="mono">Most recent first</div>
+    </div>
+    <div class="story-grid">
+      <aside class="story-side" aria-hidden="true">
+        <div class="counter">
+          <div class="digits"><span class="digits-strip" id="strip"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></span></div>
+          <span class="of">/ 05</span>
+        </div>
+        <div class="side-date" id="sideDate">Now</div>
+      </aside>
+      <ol class="tl" id="tl">
+        <li class="tl-item on" data-date="Now">
+          <div class="mono">Now</div>
+          <h3>Tech Operations Executive</h3>
+          <p class="tl-org">Promarc Software Pvt Ltd</p>
+          <ul><li>Supporting the technical side of day-to-day operations.</li><li>Moved into this role after the developer traineeship.</li></ul>
+        </li>
+        <li class="tl-item" data-date="Sep 2025 — Mar 2026">
+          <div class="mono">Sep 2025 — Mar 2026</div>
+          <h3>Software Developer Trainee</h3>
+          <p class="tl-org">Promarc Software Pvt Ltd</p>
+          <ul><li>Backend development in C# with ASP.NET Core Web API and PostgreSQL.</li><li>Testing, debugging and validating APIs in Postman.</li></ul>
+        </li>
+        <li class="tl-item" data-date="2021 — 2024">
+          <div class="mono">2021 — 2024</div>
+          <h3>B.E. Computer Science Engineering</h3>
+          <p class="tl-org">Dr. Rajendra Gode Institute of Technology &amp; Research, Amravati</p>
+          <ul><li>Bachelor of Engineering in Computer Science Engineering.</li><li>Certifications in machine learning, and in full stack data science with generative AI.</li></ul>
+        </li>
+        <li class="tl-item" data-date="2019 — 2021">
+          <div class="mono">2019 — 2021</div>
+          <h3>Diploma in Computer Engineering</h3>
+          <p class="tl-org">Government Polytechnic Gondia</p>
+          <ul><li>Where computer engineering started.</li></ul>
+        </li>
+        <li class="tl-item" data-date="2016 — 2017">
+          <div class="mono">2016 — 2017</div>
+          <h3>H.S.C. and S.S.C., Wardha</h3>
+          <p class="tl-org">Bharat Dyan Mandir College · New English High School</p>
+          <ul><li>H.S.C. in 2017 and S.S.C. in 2016, both in Wardha.</li></ul>
+        </li>
+      </ol>
+    </div>
+    <div class="also">
+      <div><span class="mono">Certifications</span><p>Machine Learning · Full stack Data Science and Generative AI</p></div>
+      <div><span class="mono">Away from the screen</span><p>Painting, drawing, listening to music and reading books.</p></div>
+    </div>
+  </section>
+
+  <section class="sec wrap cta" id="contact">
+    <span class="mono">Open to new opportunities</span>
+    <h2>Need a backend built? Let's talk.</h2>
+    <p>I am looking for backend and .NET developer roles where I can keep building APIs, work with data and learn from a team. Send a message and I will reply.</p>
+    <div class="hero-actions">
+      <button class="btn primary" type="button" data-contact>Get in touch</button>
+      <a class="btn" href="#work">See my work</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Work</h4><ul><li><a href="#work">Backend developer</a></li><li><a href="#work">API builder</a></li><li><a href="#work">Database work</a></li><li><a href="#work">Data science</a></li></ul></div>
+      <div><h4>Navigate</h4><ul><li><a href="#top">Home</a></li><li><a href="#projects">Projects</a></li><li><a href="#story">My story</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div><h4>Elsewhere</h4><ul><li><a href="https://github.com/samikskhazelkar" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://linkedin.com/in/samiksha-zelkar-1235652bb/" target="_blank" rel="noopener">LinkedIn ↗</a></li></ul></div>
+      <div><h4>Status</h4><ul><li>Open to work</li><li>Based in Nagpur, Maharashtra</li><li>Local time <span id="clock2">—</span></li></ul></div>
+    </div>
+    <div class="foot-base"><span>© 2026 Samiksha Zelkar</span><a href="#top">Back to top ↑</a></div>
+  </div>
+</footer>
+
+<div class="overlay modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="modalTitle">Let's get in touch</h2>
+      <button class="icon-btn" id="modalClose" type="button" aria-label="Close contact details">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+    <p class="lead">Copy my details below, or open your email app if it works on this device.</p>
+    <div class="rows">
+      <div class="row"><span class="mono k">Email</span><span class="v" id="vEmail">samikshazelkar1999@gmail.com</span><button class="copy" type="button" data-copy="vEmail">Copy</button></div>
+      <div class="row"><span class="mono k">Phone</span><span class="v" id="vPhone">+91 90671 91533</span><button class="copy" type="button" data-copy="vPhone">Copy</button></div>
+      <div class="row"><span class="mono k">LinkedIn</span><a class="v" href="https://linkedin.com/in/samiksha-zelkar-1235652bb/" target="_blank" rel="noopener">linkedin.com/in/samiksha-zelkar-1235652bb ↗</a></div>
+      <div class="row"><span class="mono k">GitHub</span><a class="v" href="https://github.com/samikskhazelkar" target="_blank" rel="noopener">github.com/samikskhazelkar ↗</a></div>
+    </div>
+    <p class="note" id="copyNote" role="status"></p>
+    <div class="hero-actions" style="margin-top:8px"><a class="btn primary" href="mailto:samikshazelkar1999@gmail.com">Open email app</a></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* clock, India time */
+  function tickClock() {
+    try {
+      var d = new Date();
+      var t = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit', hour12: true }).formatToParts(d);
+      var g = function (p, ty) { var x = p.filter(function (i) { return i.type === ty; })[0]; return x ? x.value : ''; };
+      var time = g(t, 'hour') + ':' + g(t, 'minute') + g(t, 'dayPeriod').toLowerCase();
+      var dt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(d);
+      var date = g(dt, 'day') + ' ' + g(dt, 'month') + ', ' + g(dt, 'year');
+      $('#clock').textContent = time + ' • ' + date;
+      $('#clock2').textContent = time;
+    } catch (e) {}
+  }
+  tickClock(); setInterval(tickClock, 20000);
+
+  /* typed words */
+  var words = ['backend developer', 'API builder', '.NET developer', 'data science learner'];
+  var typed = $('#typed');
+  if (!reduce) {
+    var wi = 0, ci = words[0].length, erasing = false;
+    (function step() {
+      var w = words[wi], delay = 70;
+      if (!erasing) {
+        ci++; typed.textContent = w.slice(0, ci);
+        if (ci >= w.length) { erasing = true; delay = 1800; }
+      } else {
+        ci--; typed.textContent = w.slice(0, ci); delay = 35;
+        if (ci <= 0) { erasing = false; wi = (wi + 1) % words.length; delay = 250; }
+      }
+      setTimeout(step, delay);
+    })();
+    setTimeout(function () {}, 0);
+  }
+
+  /* card tilt */
+  var card = $('#card');
+  if (card && !reduce && window.matchMedia('(hover: hover)').matches) {
+    card.parentNode.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--ry', ((x - .5) * 12).toFixed(2) + 'deg');
+      card.style.setProperty('--rx', ((.5 - y) * 12).toFixed(2) + 'deg');
+      card.style.setProperty('--gx', (x * 100).toFixed(0) + '%');
+      card.style.setProperty('--gy', (y * 100).toFixed(0) + '%');
+    });
+    card.parentNode.addEventListener('pointerleave', function () {
+      card.style.setProperty('--ry', '0deg'); card.style.setProperty('--rx', '0deg');
+    });
+  }
+
+  /* doors */
+  $$('.door').forEach(function (d) {
+    d.addEventListener('click', function () {
+      var open = d.classList.toggle('open');
+      d.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+
+  /* story counter */
+  var items = $$('.tl-item'), strip = $('#strip'), sideDate = $('#sideDate');
+  function setActive(i) {
+    items.forEach(function (it, n) { it.classList.toggle('on', n === i); });
+    if (strip) strip.style.transform = 'translateY(' + (-i) + 'em)';
+    if (sideDate) sideDate.textContent = items[i].getAttribute('data-date');
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) setActive(items.indexOf(en.target)); });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+    items.forEach(function (it) { io.observe(it); });
+  }
+
+  /* overlays */
+  var menu = $('#menu'), modal = $('#modal'), menuBtn = $('#menuBtn'), lastFocus = null;
+  function openLayer(el, focusSel) {
+    lastFocus = document.activeElement; el.hidden = false; document.body.style.overflow = 'hidden';
+    var f = $(focusSel, el); if (f) f.focus();
+  }
+  function closeLayer(el) {
+    el.hidden = true; document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  menuBtn.addEventListener('click', function () { openLayer(menu, '#menuClose'); menuBtn.setAttribute('aria-expanded', 'true'); });
+  $('#menuClose').addEventListener('click', function () { closeLayer(menu); menuBtn.setAttribute('aria-expanded', 'false'); });
+  $$('[data-close]').forEach(function (a) { a.addEventListener('click', function () { menu.hidden = true; document.body.style.overflow = ''; menuBtn.setAttribute('aria-expanded', 'false'); }); });
+  $$('[data-contact]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!menu.hidden) { menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); }
+      openLayer(modal, '#modalClose'); $('#copyNote').textContent = '';
+    });
+  });
+  $('#modalClose').addEventListener('click', function () { closeLayer(modal); });
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeLayer(modal); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (!modal.hidden) closeLayer(modal); else if (!menu.hidden) { closeLayer(menu); menuBtn.setAttribute('aria-expanded', 'false'); }
+  });
+
+  /* copy */
+  function selectText(el) { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+  $$('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var src = document.getElementById(b.getAttribute('data-copy')), note = $('#copyNote');
+      var fallback = function () { selectText(src); note.textContent = 'Selected. Press Ctrl+C or Cmd+C to copy.'; };
+      try {
+        navigator.clipboard.writeText(src.textContent.trim()).then(function () { note.textContent = 'Copied.'; }, fallback);
+      } catch (e) { fallback(); }
+    });
+  });
+
+  /* theme toggle */
+  $('#themeBtn').addEventListener('click', function () {
+    var root = document.documentElement, cur = root.getAttribute('data-theme');
+    if (!cur) cur = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+  });
+})();
+</script>
+
+</body></html>
